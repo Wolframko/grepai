@@ -217,12 +217,12 @@ func TestIsMinifiedFile(t *testing.T) {
 		{"styles.min.css", true},
 		{"app.bundle.js", true},
 		{"main.bundle.css", true},
-		{"JQUERY.MIN.JS", true},   // Case insensitive
-		{"App.Bundle.CSS", true},  // Case insensitive
+		{"JQUERY.MIN.JS", true},  // Case insensitive
+		{"App.Bundle.CSS", true}, // Case insensitive
 		{"app.js", false},
 		{"styles.css", false},
-		{"minified.js", false},   // "min" in name but not pattern
-		{"bundle.go", false},     // "bundle" in name but not pattern
+		{"minified.js", false},          // "min" in name but not pattern
+		{"bundle.go", false},            // "bundle" in name but not pattern
 		{"src/lib/jquery.min.js", true}, // With path
 	}
 

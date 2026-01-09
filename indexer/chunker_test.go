@@ -182,12 +182,12 @@ func TestGetLineNumber(t *testing.T) {
 		pos      int
 		expected int
 	}{
-		{0, 1},   // Start of line 1
-		{3, 1},   // Middle of line 1
-		{6, 2},   // Start of line 2
-		{12, 3},  // Start of line 3
-		{18, 4},  // Start of line 4
-		{22, 4},  // End of content
+		{0, 1},  // Start of line 1
+		{3, 1},  // Middle of line 1
+		{6, 2},  // Start of line 2
+		{12, 3}, // Start of line 3
+		{18, 4}, // Start of line 4
+		{22, 4}, // End of content
 	}
 
 	for _, tt := range tests {
