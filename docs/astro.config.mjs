@@ -44,7 +44,6 @@ export default defineConfig({
           ],
         },
       ],
-      customCss: ['./src/styles/custom.css'],
       editLink: {
         baseUrl: 'https://github.com/yoanbernabeu/grepai/edit/main/docs/',
       },
