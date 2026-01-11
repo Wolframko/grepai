@@ -72,7 +72,32 @@ Follow conventional commits: `type(scope): description`
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
+## Issue Workflow
 
+When working on a GitHub issue, **ALWAYS** follow this workflow:
+
+1. **Create a feature branch** from `main`:
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b <type>/<issue-number>-<short-description>
+   # Example: feat/42-add-new-embedder
+   ```
+
+2. **Implement the changes** and commit following the commit convention
+
+3. **Push the branch and create a Pull Request**:
+   ```bash
+   git push -u origin <branch-name>
+   gh pr create --title "<type>(scope): description" --body "Closes #<issue-number>"
+   ```
+
+4. **Before merging**, ensure:
+   - CI pipeline passes (all checks green)
+   - Code has been reviewed if required
+   - No merge conflicts with `main`
+
+**IMPORTANT:** Never push directly to `main`. Always use branches and PRs.
 
 
 ## grepai - Semantic Code Search
