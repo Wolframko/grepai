@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"syscall"
 	"time"
@@ -349,7 +350,7 @@ func runWatchLoop(ctx context.Context, st store.VectorStore, symbolStore *trace.
 	}
 }
 
-func runInitialScan(ctx context.Context, idx *indexer.Indexer, scanner *indexer.Scanner, extractor trace.SymbolExtractor, symbolStore *trace.GOBSymbolStore, tracedLanguages []string, isBackgroundChild bool) error {
+func runInitialScan(ctx context.Context, idx *indexer.Indexer, scanner *indexer.Scanner, extractor trace.SymbolExtractor, symbolStore *trace.GOBSymbolStore, tracedLanguages []string, cfg *config.Config, isBackgroundChild bool) error {
 	// Initial scan with progress
 	if !isBackgroundChild {
 		fmt.Println("\nPerforming initial scan...")
@@ -357,16 +358,25 @@ func runInitialScan(ctx context.Context, idx *indexer.Indexer, scanner *indexer.
 		log.Println("Performing initial scan...")
 	}
 
+	// Determine number of workers
+	numWorkers := cfg.Chunking.ParallelWorkers
+	if numWorkers == 0 {
+		numWorkers = runtime.NumCPU()
+	}
+
+	// Get batch size from config
+	batchSize := cfg.Chunking.EmbedBatchSize
+
 	var stats *indexer.IndexStats
 	var err error
 	if !isBackgroundChild {
-		stats, err = idx.IndexAllWithProgress(ctx, func(info indexer.ProgressInfo) {
+		stats, err = idx.IndexAllParallel(ctx, numWorkers, batchSize, func(info indexer.ProgressInfo) {
 			printProgress(info.Current, info.Total, info.CurrentFile)
 		})
 		// Clear progress line
 		fmt.Print("\r" + strings.Repeat(" ", 80) + "\r")
 	} else {
-		stats, err = idx.IndexAllWithProgress(ctx, nil)
+		stats, err = idx.IndexAllParallel(ctx, numWorkers, batchSize, nil)
 	}
 
 	if err != nil {
@@ -522,7 +532,7 @@ func runWatchForeground() error {
 	}
 
 	// Run initial scan and build symbol index
-	if err := runInitialScan(ctx, idx, scanner, extractor, symbolStore, tracedLanguages, isBackgroundChild); err != nil {
+	if err := runInitialScan(ctx, idx, scanner, extractor, symbolStore, tracedLanguages, cfg, isBackgroundChild); err != nil {
 		return err
 	}
 

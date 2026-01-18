@@ -90,3 +90,11 @@ type VectorStore interface {
 	// GetAllChunks returns all chunks in the store (used for text search)
 	GetAllChunks(ctx context.Context) ([]Chunk, error)
 }
+
+// BatchDocumentReader is an optional interface for stores that can efficiently
+// retrieve multiple documents in a single operation.
+type BatchDocumentReader interface {
+	// GetDocumentBatch retrieves document metadata for multiple paths in a single query.
+	// Returns a map of path -> Document. If a document doesn't exist, it won't be in the map.
+	GetDocumentBatch(ctx context.Context, paths []string) (map[string]*Document, error)
+}

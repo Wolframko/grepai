@@ -96,6 +96,22 @@ func (s *GOBStore) GetDocument(ctx context.Context, filePath string) (*Document,
 	return &doc, nil
 }
 
+// GetDocumentBatch retrieves multiple documents in a single operation
+func (s *GOBStore) GetDocumentBatch(ctx context.Context, paths []string) (map[string]*Document, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	result := make(map[string]*Document, len(paths))
+	for _, path := range paths {
+		if doc, ok := s.documents[path]; ok {
+			docCopy := doc
+			result[path] = &docCopy
+		}
+	}
+
+	return result, nil
+}
+
 func (s *GOBStore) SaveDocument(ctx context.Context, doc Document) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()

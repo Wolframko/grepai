@@ -77,8 +77,10 @@ type LanceDBConfig struct {
 }
 
 type ChunkingConfig struct {
-	Size    int `yaml:"size"`
-	Overlap int `yaml:"overlap"`
+	Size            int `yaml:"size"`
+	Overlap         int `yaml:"overlap"`
+	ParallelWorkers int `yaml:"parallel_workers"` // 0 = auto (NumCPU), or explicit value
+	EmbedBatchSize  int `yaml:"embed_batch_size"` // chunks per batch for embedding
 }
 
 type WatchConfig struct {
@@ -104,8 +106,10 @@ func DefaultConfig() *Config {
 			Backend: "gob",
 		},
 		Chunking: ChunkingConfig{
-			Size:    512,
-			Overlap: 50,
+			Size:            512,
+			Overlap:         50,
+			ParallelWorkers: 0,   // 0 = auto (runtime.NumCPU())
+			EmbedBatchSize:  100, // 100 chunks per batch
 		},
 		Watch: WatchConfig{
 			DebounceMs: 500,
@@ -265,6 +269,10 @@ func (c *Config) applyDefaults() {
 	}
 	if c.Chunking.Overlap == 0 {
 		c.Chunking.Overlap = defaults.Chunking.Overlap
+	}
+	// Note: ParallelWorkers defaults to 0 (auto), so we don't set it here
+	if c.Chunking.EmbedBatchSize == 0 {
+		c.Chunking.EmbedBatchSize = defaults.Chunking.EmbedBatchSize
 	}
 
 	// Watch defaults

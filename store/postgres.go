@@ -176,6 +176,37 @@ func (s *PostgresStore) GetDocument(ctx context.Context, filePath string) (*Docu
 	return &doc, nil
 }
 
+// GetDocumentBatch retrieves multiple documents in a single query using PostgreSQL ANY array
+func (s *PostgresStore) GetDocumentBatch(ctx context.Context, paths []string) (map[string]*Document, error) {
+	if len(paths) == 0 {
+		return make(map[string]*Document), nil
+	}
+
+	rows, err := s.pool.Query(ctx,
+		`SELECT path, hash, mod_time, chunk_ids FROM documents WHERE project_id = $1 AND path = ANY($2)`,
+		s.projectID, paths,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to batch get documents: %w", err)
+	}
+	defer rows.Close()
+
+	result := make(map[string]*Document, len(paths))
+	for rows.Next() {
+		var doc Document
+		var modTime time.Time
+
+		if err := rows.Scan(&doc.Path, &doc.Hash, &modTime, &doc.ChunkIDs); err != nil {
+			return nil, fmt.Errorf("failed to scan document: %w", err)
+		}
+
+		doc.ModTime = modTime
+		result[doc.Path] = &doc
+	}
+
+	return result, rows.Err()
+}
+
 func (s *PostgresStore) SaveDocument(ctx context.Context, doc Document) error {
 	_, err := s.pool.Exec(ctx,
 		`INSERT INTO documents (path, project_id, hash, mod_time, chunk_ids)
