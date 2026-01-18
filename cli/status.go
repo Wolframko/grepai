@@ -328,6 +328,16 @@ func runStatus(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to connect to postgres: %w", err)
 		}
+	case "lancedb":
+		lancedbPath := config.GetLanceDBPath(projectRoot)
+		lanceStore, err := store.NewLanceDBStore(lancedbPath, cfg.Embedder.Dimensions)
+		if err != nil {
+			return fmt.Errorf("failed to create lancedb store: %w", err)
+		}
+		if err := lanceStore.Load(ctx); err != nil {
+			return fmt.Errorf("failed to load lancedb: %w", err)
+		}
+		st = lanceStore
 	default:
 		return fmt.Errorf("unknown storage backend: %s", cfg.Store.Backend)
 	}

@@ -288,6 +288,16 @@ func initializeStore(ctx context.Context, cfg *config.Config, projectRoot string
 		return gobStore, nil
 	case "postgres":
 		return store.NewPostgresStore(ctx, cfg.Store.Postgres.DSN, projectRoot, cfg.Embedder.Dimensions)
+	case "lancedb":
+		lancedbPath := config.GetLanceDBPath(projectRoot)
+		lanceStore, err := store.NewLanceDBStore(lancedbPath, cfg.Embedder.Dimensions)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create lancedb store: %w", err)
+		}
+		if err := lanceStore.Load(ctx); err != nil {
+			return nil, fmt.Errorf("failed to load lancedb: %w", err)
+		}
+		return lanceStore, nil
 	default:
 		return nil, fmt.Errorf("unknown storage backend: %s", cfg.Store.Backend)
 	}

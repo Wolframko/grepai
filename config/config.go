@@ -63,12 +63,17 @@ type EmbedderConfig struct {
 }
 
 type StoreConfig struct {
-	Backend  string         `yaml:"backend"` // gob | postgres
+	Backend  string         `yaml:"backend"` // gob | postgres | lancedb
 	Postgres PostgresConfig `yaml:"postgres,omitempty"`
+	LanceDB  LanceDBConfig  `yaml:"lancedb,omitempty"`
 }
 
 type PostgresConfig struct {
 	DSN string `yaml:"dsn"`
+}
+
+type LanceDBConfig struct {
+	Path string `yaml:"path"` // Path to LanceDB directory
 }
 
 type ChunkingConfig struct {
@@ -196,6 +201,10 @@ func GetIndexPath(projectRoot string) string {
 
 func GetSymbolIndexPath(projectRoot string) string {
 	return filepath.Join(GetConfigDir(projectRoot), SymbolIndexFileName)
+}
+
+func GetLanceDBPath(projectRoot string) string {
+	return filepath.Join(GetConfigDir(projectRoot), "lancedb")
 }
 
 func Load(projectRoot string) (*Config, error) {
