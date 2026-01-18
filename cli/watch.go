@@ -293,7 +293,7 @@ func initializeStore(ctx context.Context, cfg *config.Config, projectRoot string
 	}
 }
 
-func runWatchLoop(ctx context.Context, st store.VectorStore, symbolStore *trace.GOBSymbolStore, w *watcher.Watcher, idx *indexer.Indexer, scanner *indexer.Scanner, extractor *trace.RegexExtractor, tracedLanguages []string, isBackgroundChild bool) error {
+func runWatchLoop(ctx context.Context, st store.VectorStore, symbolStore *trace.GOBSymbolStore, w *watcher.Watcher, idx *indexer.Indexer, scanner *indexer.Scanner, extractor trace.SymbolExtractor, tracedLanguages []string, isBackgroundChild bool) error {
 	// Handle signals
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
@@ -339,7 +339,7 @@ func runWatchLoop(ctx context.Context, st store.VectorStore, symbolStore *trace.
 	}
 }
 
-func runInitialScan(ctx context.Context, idx *indexer.Indexer, scanner *indexer.Scanner, extractor *trace.RegexExtractor, symbolStore *trace.GOBSymbolStore, tracedLanguages []string, isBackgroundChild bool) error {
+func runInitialScan(ctx context.Context, idx *indexer.Indexer, scanner *indexer.Scanner, extractor trace.SymbolExtractor, symbolStore *trace.GOBSymbolStore, tracedLanguages []string, isBackgroundChild bool) error {
 	// Initial scan with progress
 	if !isBackgroundChild {
 		fmt.Println("\nPerforming initial scan...")
@@ -500,7 +500,10 @@ func runWatchForeground() error {
 	}
 	defer symbolStore.Close()
 
-	extractor := trace.NewRegexExtractor()
+	extractor, err := trace.NewExtractor(cfg.Trace.Mode)
+	if err != nil {
+		return fmt.Errorf("failed to initialize trace extractor: %w", err)
+	}
 
 	// Use default trace languages if not configured
 	tracedLanguages := cfg.Trace.EnabledLanguages
@@ -546,7 +549,7 @@ func runWatchForeground() error {
 	return runWatchLoop(ctx, st, symbolStore, w, idx, scanner, extractor, tracedLanguages, isBackgroundChild)
 }
 
-func handleFileEvent(ctx context.Context, idx *indexer.Indexer, scanner *indexer.Scanner, extractor *trace.RegexExtractor, symbolStore *trace.GOBSymbolStore, enabledLanguages []string, event watcher.FileEvent) {
+func handleFileEvent(ctx context.Context, idx *indexer.Indexer, scanner *indexer.Scanner, extractor trace.SymbolExtractor, symbolStore *trace.GOBSymbolStore, enabledLanguages []string, event watcher.FileEvent) {
 	log.Printf("[%s] %s", event.Type, event.Path)
 
 	switch event.Type {
