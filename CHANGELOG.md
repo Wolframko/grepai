@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.1] - 2026-01-18
+
+### Fixed
+
+- **CLI Error Display**: Commands now properly display error messages on stderr (#52, #53)
+  - Previously errors were silenced by Cobra's `SilenceErrors: true` setting
+  - Permission errors in `update` command now show user-friendly message with sudo suggestion
+
 ## [0.16.0] - 2026-01-16
 
 ### Added
