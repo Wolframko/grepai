@@ -1,0 +1,111 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description = 'grepai is a privacy-first semantic code search CLI. Give your AI coding agents a semantic map of your codebase. Find relevant code with natural language.',
+  image,
+  type = 'website'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = image || new URL('/grepai/og-image.png', Astro.site);
+
+// Schema.org structured data for SoftwareApplication
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "grepai",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "macOS, Linux, Windows",
+  "description": description,
+  "url": "https://yoanbernabeu.github.io/grepai/",
+  "downloadUrl": "https://github.com/yoanbernabeu/grepai/releases",
+  "softwareVersion": "0.16.1",
+  "author": {
+    "@type": "Person",
+    "name": "Yoan Bernabeu",
+    "url": "https://github.com/yoanbernabeu"
+  },
+  "license": "https://opensource.org/licenses/MIT",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Semantic code search with natural language",
+    "Call graph tracing (callers, callees)",
+    "100% local with Ollama",
+    "MCP server integration",
+    "Real-time file watching",
+    "JSON output for AI agents"
+  ],
+  "keywords": "code search, semantic search, AI agent, CLI, developer tools, Cursor, Claude Code"
+};
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title} | grepai</title>
+    <meta name="title" content={`${title} | grepai`} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="grepai, semantic code search, AI agent, code search CLI, Cursor, Claude Code, Windsurf, MCP, developer tools, code indexing, call graph" />
+    <meta name="author" content="Yoan Bernabeu" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} | grepai`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content="grepai" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={`${title} | grepai`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/grepai/favicon.svg" />
+    <link rel="apple-touch-icon" href="/grepai/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
+
+    <!-- Styles -->
+    <style is:global>
+      @import '../styles/global.css';
+      @import '../styles/animations.css';
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <slot />
+  </body>
+</html>

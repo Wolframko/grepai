@@ -1,0 +1,59 @@
+---
+import { navigation } from '../../utils/navigation';
+
+interface Props {
+  currentSlug?: string;
+}
+
+const { currentSlug = '' } = Astro.props;
+
+function isActive(href: string): boolean {
+  if (!currentSlug) return false;
+
+  // Normalize: remove leading/trailing slashes and file extensions
+  const normalizedSlug = currentSlug.replace(/\.(md|mdx)$/, '').replace(/^\/|\/$/g, '');
+  const normalizedHref = href.replace(/^\/grepai\//, '').replace(/^\/|\/$/g, '');
+
+  // Exact match comparison
+  return normalizedSlug === normalizedHref;
+}
+---
+
+<nav class="space-y-6">
+  {navigation.map((section) => (
+    <div>
+      <h3 class="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+        {section.title}
+      </h3>
+      <ul class="space-y-1">
+        {section.items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'nav-link',
+                { 'active': isActive(item.href) }
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>
+
+<style>
+  .nav-link {
+    @apply block px-3 py-2 rounded-lg text-sm text-gray-400 transition-all duration-200;
+  }
+
+  .nav-link:hover {
+    @apply text-gray-200 bg-white/5;
+  }
+
+  .nav-link.active {
+    @apply text-primary-400 bg-primary-400/10 font-medium;
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+interface Props {
+  labels: string[];
+}
+
+const { labels } = Astro.props;
+const id = `tabs-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="tabs-container my-6" data-tabs-id={id}>
+  <!-- Tab buttons -->
+  <div class="flex border-b border-glass-border mb-4 overflow-x-auto no-scrollbar" role="tablist">
+    {labels.map((label, index) => (
+      <button
+        type="button"
+        role="tab"
+        class:list={[
+          'tab-button px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+          { 'active': index === 0 }
+        ]}
+        data-tab-index={index}
+        aria-selected={index === 0}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+
+  <!-- Tab panels -->
+  <div class="tab-panels">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .tab-button {
+    color: #9ca3af;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .tab-button:hover {
+    color: #e5e7eb;
+  }
+
+  .tab-button.active {
+    color: #818cf8;
+    border-bottom-color: #818cf8;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.tabs-container').forEach((container) => {
+    const buttons = container.querySelectorAll('.tab-button');
+    const panels = container.querySelectorAll(':scope > .tab-panels > *');
+
+    // Initialize: hide all panels except first
+    panels.forEach((panel, index) => {
+      if (index !== 0) {
+        (panel as HTMLElement).style.display = 'none';
+      }
+    });
+
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        // Update buttons
+        buttons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+
+        // Update panels
+        panels.forEach((panel, panelIndex) => {
+          (panel as HTMLElement).style.display = panelIndex === index ? 'block' : 'none';
+        });
+      });
+    });
+  });
+</script>

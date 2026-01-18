@@ -1,0 +1,115 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import Sidebar from '../components/docs/Sidebar.astro';
+import TableOfContents from '../components/docs/TableOfContents.astro';
+import Breadcrumbs from '../components/docs/Breadcrumbs.astro';
+import Pagination from '../components/docs/Pagination.astro';
+import CopyCodeButton from '../components/global/CopyCodeButton.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  headings?: { depth: number; slug: string; text: string }[];
+  section?: string;
+  slug?: string;
+}
+
+const { title, description, headings = [], section, slug } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+
+  <div class="flex-1 flex">
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-64 flex-shrink-0">
+      <div class="sidebar-container fixed top-16 w-64 h-[calc(100vh-4rem)] overflow-y-auto py-8 px-4 border-r border-glass-border bg-surface-50">
+        <Sidebar currentSlug={slug} />
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 min-w-0">
+      <div class="max-w-4xl mx-auto px-6 py-12">
+        <Breadcrumbs section={section} title={title} />
+
+        <article class="prose prose-invert max-w-none" data-pagefind-body>
+          <h1 class="text-4xl font-extrabold gradient-text mb-4">{title}</h1>
+          {description && <p class="text-xl text-gray-400 mb-8">{description}</p>}
+
+          <slot />
+        </article>
+
+        <Pagination currentSlug={slug} />
+      </div>
+    </main>
+
+    <!-- Table of Contents -->
+    <aside class="hidden xl:block w-64 flex-shrink-0">
+      <div class="fixed top-16 w-64 h-[calc(100vh-4rem)] overflow-y-auto py-8 px-4">
+        <TableOfContents headings={headings} />
+      </div>
+    </aside>
+  </div>
+
+  <Footer />
+
+  <!-- Copy code button functionality -->
+  <CopyCodeButton />
+
+  <!-- Sidebar scroll persistence -->
+  <script>
+    const SCROLL_KEY = 'sidebar-scroll-position';
+
+    function initSidebarScroll() {
+      const sidebar = document.querySelector('.sidebar-container');
+      if (!sidebar) return;
+
+      // Restore scroll position
+      const savedPosition = sessionStorage.getItem(SCROLL_KEY);
+      if (savedPosition) {
+        sidebar.scrollTop = parseInt(savedPosition, 10);
+      }
+
+      // Save scroll position on scroll
+      sidebar.addEventListener('scroll', () => {
+        sessionStorage.setItem(SCROLL_KEY, String(sidebar.scrollTop));
+      });
+
+      // Save position before navigation
+      document.querySelectorAll('.sidebar-container a').forEach(link => {
+        link.addEventListener('click', () => {
+          sessionStorage.setItem(SCROLL_KEY, String(sidebar.scrollTop));
+        });
+      });
+    }
+
+    // Run on page load
+    initSidebarScroll();
+
+    // Re-run on Astro page transitions
+    document.addEventListener('astro:page-load', initSidebarScroll);
+  </script>
+
+  <style>
+    /* Custom scrollbar for sidebar */
+    .sidebar-container::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</BaseLayout>

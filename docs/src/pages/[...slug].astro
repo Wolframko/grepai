@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { findCurrentSection } from '../utils/navigation';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+
+  return docs.map((entry) => {
+    // Handle different slug formats
+    let slug = entry.id;
+
+    // Remove file extension if present
+    slug = slug.replace(/\.(md|mdx)$/, '');
+
+    // Handle index files
+    if (slug === 'index') {
+      slug = '';
+    }
+
+    return {
+      params: { slug: slug || undefined },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const section = findCurrentSection(entry.id);
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  headings={headings}
+  section={section}
+  slug={entry.id}
+>
+  <Content />
+</DocsLayout>

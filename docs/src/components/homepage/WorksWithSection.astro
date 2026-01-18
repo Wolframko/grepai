@@ -1,0 +1,151 @@
+---
+import {
+  siCursor,
+  siAnthropic,
+  siGoogle,
+  siOllama,
+  siGithub,
+} from 'simple-icons';
+
+// Works With Section - Compatible tools and integrations
+const integrations = [
+  {
+    name: 'Cursor',
+    description: 'AI-first code editor',
+    icon: siCursor,
+    color: '#FFFFFF',
+  },
+  {
+    name: 'Claude Code',
+    description: 'Anthropic CLI agent',
+    icon: siAnthropic,
+    color: '#D97757',
+  },
+  {
+    name: 'Windsurf',
+    description: 'Codeium IDE',
+    icon: null, // Custom SVG below
+    color: '#09B6A2',
+  },
+  {
+    name: 'Gemini CLI',
+    description: 'Google AI agent',
+    icon: siGoogle,
+    color: '#4285F4',
+  },
+  {
+    name: 'MCP Server',
+    description: 'Model Context Protocol',
+    icon: null, // Custom SVG below
+    color: '#10B981',
+  },
+  {
+    name: 'Any AI Agent',
+    description: 'Via JSON API',
+    icon: null, // Custom SVG below
+    color: '#F59E0B',
+  },
+];
+
+const languages = [
+  'Go', 'JavaScript', 'TypeScript', 'Python', 'PHP', 'C#', 'Java', 'C', 'C++', 'Rust', 'Zig'
+];
+
+// Custom SVG paths for tools not in simple-icons
+const customIcons = {
+  windsurf: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+  mcp: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z',
+  api: 'M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6v-2zm0 4h8v2H6v-2zm10 0h2v2h-2v-2zm-6-4h8v2h-8v-2z',
+};
+---
+
+<section class="py-20 px-4 border-t border-glass-border">
+  <div class="max-w-6xl mx-auto">
+    <!-- Integrations -->
+    <div class="text-center mb-12">
+      <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
+        Works with your favorite tools
+      </h2>
+      <p class="text-gray-400">
+        Native integrations with leading AI coding assistants
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
+      {integrations.map((tool, index) => (
+        <div class="glass p-4 rounded-xl text-center hover:bg-white/5 transition-colors group">
+          <div
+            class="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center transition-colors"
+            style={`background: ${tool.color}15;`}
+          >
+            {tool.icon ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={tool.color}
+                class="group-hover:scale-110 transition-transform"
+              >
+                <path d={tool.icon.path} />
+              </svg>
+            ) : tool.name === 'Windsurf' ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={tool.color}
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="group-hover:scale-110 transition-transform"
+              >
+                <path d={customIcons.windsurf} />
+              </svg>
+            ) : tool.name === 'MCP Server' ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={tool.color}
+                class="group-hover:scale-110 transition-transform"
+              >
+                <path d={customIcons.mcp} />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={tool.color}
+                class="group-hover:scale-110 transition-transform"
+              >
+                <path d={customIcons.api} />
+              </svg>
+            )}
+          </div>
+          <h3 class="font-semibold text-white text-sm mb-1">{tool.name}</h3>
+          <p class="text-gray-500 text-xs">{tool.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Languages -->
+    <div class="text-center">
+      <p class="text-gray-400 mb-4">
+        Call graph tracing for
+      </p>
+      <div class="flex flex-wrap justify-center gap-2">
+        {languages.map((lang) => (
+          <span class="px-3 py-1 rounded-full bg-surface-200 text-gray-300 text-sm font-mono">
+            {lang}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

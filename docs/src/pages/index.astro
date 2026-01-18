@@ -1,0 +1,214 @@
+---
+import SplashLayout from '../layouts/SplashLayout.astro';
+import HeroAnimated from '../components/homepage/HeroAnimated.astro';
+import TerminalDemo from '../components/homepage/TerminalDemo.astro';
+import ProblemSection from '../components/homepage/ProblemSection.astro';
+import WorksWithSection from '../components/homepage/WorksWithSection.astro';
+import Card from '../components/content/Card.astro';
+import CardGrid from '../components/content/CardGrid.astro';
+import LinkCard from '../components/content/LinkCard.astro';
+import Steps from '../components/content/Steps.astro';
+import Tabs from '../components/content/Tabs.astro';
+import TabItem from '../components/content/TabItem.astro';
+import Badge from '../components/content/Badge.astro';
+---
+
+<SplashLayout
+  title="Semantic Code Search for AI Agents"
+  description="grepai is a privacy-first semantic code search CLI. Give your AI coding agents a semantic map of your codebase. Find relevant code instantly with natural language."
+>
+  <!-- Hero -->
+  <HeroAnimated />
+
+  <!-- Terminal Demo -->
+  <div class="pb-8">
+    <TerminalDemo />
+  </div>
+
+  <!-- Problem Section -->
+  <ProblemSection />
+
+  <!-- Features Section -->
+  <section class="py-20 px-4 border-t border-glass-border">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Why developers choose grepai</h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+          Built for developers who want their AI tools to actually understand their code
+        </p>
+      </div>
+      <CardGrid>
+        <Card title="Semantic Search" icon="magnifier">
+          Ask in plain English. grepai understands code meaning, not just text patterns. Find "authentication logic" even if it's called <code>validateUser</code>.
+        </Card>
+        <Card title="Call Graph Tracing" icon="random">
+          Find callers and callees of any function. Build dependency graphs. Understand impact before refactoring.
+        </Card>
+        <Card title="100% Local & Private" icon="laptop">
+          Runs entirely on your machine with Ollama. Your code never leaves your laptop. Zero cloud dependencies.
+        </Card>
+        <Card title="AI Agent Ready" icon="puzzle">
+          JSON output designed for AI agents. Native MCP server. First-class integration with Cursor, Claude Code, Windsurf.
+        </Card>
+        <Card title="Real-time Indexing" icon="approve-check">
+          File watcher keeps your index up-to-date as you code. No manual re-indexing needed. Start coding immediately.
+        </Card>
+        <Card title="Lightweight & Fast" icon="star">
+          Single binary, no dependencies. Index a 10k file project in seconds. Search results in milliseconds.
+        </Card>
+      </CardGrid>
+    </div>
+  </section>
+
+  <!-- Works With Section -->
+  <WorksWithSection />
+
+  <!-- Get started section -->
+  <section class="py-20 px-4 border-t border-glass-border">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Get started in 30 seconds</h2>
+        <p class="text-gray-400 text-lg">
+          From zero to semantic search in four commands
+        </p>
+      </div>
+      <Steps>
+        <ol>
+          <li>
+            <strong>Install grepai</strong>
+            <pre><code class="language-bash">curl -sSL https://raw.githubusercontent.com/yoanbernabeu/grepai/main/install.sh | sh</code></pre>
+          </li>
+          <li>
+            <strong>Initialize your project</strong>
+            <pre><code class="language-bash">cd your-project && grepai init</code></pre>
+          </li>
+          <li>
+            <strong>Start indexing</strong>
+            <pre><code class="language-bash">grepai watch</code></pre>
+          </li>
+          <li>
+            <strong>Search with natural language</strong>
+            <pre><code class="language-bash">grepai search "user authentication flow"
+grepai trace callers "Login"</code></pre>
+          </li>
+        </ol>
+      </Steps>
+      <div class="text-center mt-8">
+        <a href="/grepai/quickstart/" class="btn-primary">
+          Read the full guide
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Choose your embedder section -->
+  <section class="py-20 px-4 border-t border-glass-border">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Your embedder, your choice</h2>
+        <p class="text-gray-400 text-lg">
+          Run locally with Ollama or use cloud embeddings
+        </p>
+      </div>
+      <Tabs labels={["Ollama (Local)", "OpenAI (Cloud)"]}>
+        <TabItem label="Ollama (Local)">
+          <div class="glass p-6 rounded-xl">
+            <div class="flex items-center gap-2 mb-4">
+              <Badge text="Recommended" variant="success" />
+              <span class="text-gray-400 text-sm">Privacy-first, runs 100% offline</span>
+            </div>
+            <pre><code class="language-yaml"># .grepai/config.yaml
+embedder:
+  provider: ollama
+  model: nomic-embed-text</code></pre>
+          </div>
+        </TabItem>
+        <TabItem label="OpenAI (Cloud)">
+          <div class="glass p-6 rounded-xl">
+            <div class="flex items-center gap-2 mb-4">
+              <Badge text="Cloud" variant="note" />
+              <span class="text-gray-400 text-sm">Faster indexing, requires API key</span>
+            </div>
+            <pre><code class="language-yaml"># .grepai/config.yaml
+embedder:
+  provider: openai
+  model: text-embedding-3-small</code></pre>
+          </div>
+        </TabItem>
+      </Tabs>
+    </div>
+  </section>
+
+  <!-- Documentation links -->
+  <section class="py-20 px-4 border-t border-glass-border">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Dive deeper</h2>
+        <p class="text-gray-400 text-lg">
+          Everything you need to master grepai
+        </p>
+      </div>
+      <CardGrid cols={3}>
+        <LinkCard
+          title="Installation Guide"
+          description="Detailed setup instructions for all platforms"
+          href="/grepai/installation/"
+        />
+        <LinkCard
+          title="Call Graph Tracing"
+          description="Find callers, callees, and build dependency graphs"
+          href="/grepai/trace/"
+        />
+        <LinkCard
+          title="Configuration"
+          description="Customize chunking, backends, and search options"
+          href="/grepai/configuration/"
+        />
+        <LinkCard
+          title="AI Agent Setup"
+          description="Integrate with Cursor, Claude Code, Windsurf"
+          href="/grepai/commands/grepai_agent-setup/"
+        />
+        <LinkCard
+          title="MCP Integration"
+          description="Use grepai as a native MCP tool"
+          href="/grepai/mcp/"
+        />
+        <LinkCard
+          title="Contributing"
+          description="Help improve grepai"
+          href="/grepai/contributing/"
+        />
+      </CardGrid>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-24 px-4 border-t border-glass-border">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+        Ready to give your AI agent <span class="gradient-text">superpowers</span>?
+      </h2>
+      <p class="text-gray-400 text-lg mb-8">
+        Join developers who use grepai to ship faster with smarter AI assistance.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/grepai/quickstart/" class="btn-primary text-lg px-8 py-4">
+          Get Started Free
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="https://github.com/yoanbernabeu/grepai" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          Star on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+</SplashLayout>

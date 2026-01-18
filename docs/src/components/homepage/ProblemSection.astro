@@ -1,0 +1,136 @@
+---
+// The Problem Section - Pain points that grepai solves
+---
+
+<section class="py-20 px-4">
+  <div class="max-w-6xl mx-auto">
+    <!-- Section header -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+        The problem with code search today
+      </h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+        Traditional tools don't understand what your code <em>does</em>. They only match text.
+      </p>
+    </div>
+
+    <!-- Comparison grid -->
+    <div class="grid md:grid-cols-2 gap-8 mb-16">
+      <!-- Without grepai -->
+      <div class="glass p-8 rounded-2xl border-red-500/20">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400">
+              <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Without grepai</h3>
+        </div>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400 mt-0.5 flex-shrink-0">
+              <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>
+            <div>
+              <code class="text-red-300 text-sm">grep -r "auth"</code>
+              <p class="text-gray-400 text-sm mt-1">Returns 847 lines of noise</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400 mt-0.5 flex-shrink-0">
+              <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>
+            <div>
+              <span class="text-gray-300">AI reads entire files</span>
+              <p class="text-gray-400 text-sm mt-1">Wastes context window on irrelevant code</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400 mt-0.5 flex-shrink-0">
+              <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>
+            <div>
+              <span class="text-gray-300">No dependency awareness</span>
+              <p class="text-gray-400 text-sm mt-1">Can't trace who calls what</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400 mt-0.5 flex-shrink-0">
+              <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>
+            <div>
+              <span class="text-gray-300">Requires exact keywords</span>
+              <p class="text-gray-400 text-sm mt-1">Miss results if naming differs</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- With grepai -->
+      <div class="glass p-8 rounded-2xl border-green-500/20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-white">With grepai</h3>
+          </div>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400 mt-0.5 flex-shrink-0">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+              <div>
+                <code class="text-green-300 text-sm">grepai search "user login flow"</code>
+                <p class="text-gray-400 text-sm mt-1">Returns 5 relevant results, ranked by similarity</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400 mt-0.5 flex-shrink-0">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+              <div>
+                <span class="text-gray-300">Semantic understanding</span>
+                <p class="text-gray-400 text-sm mt-1">Finds code by meaning, not keywords</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400 mt-0.5 flex-shrink-0">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+              <div>
+                <span class="text-gray-300">Call graph tracing</span>
+                <p class="text-gray-400 text-sm mt-1">See callers, callees, and dependencies</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400 mt-0.5 flex-shrink-0">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+              <div>
+                <span class="text-gray-300">Real-time indexing</span>
+                <p class="text-gray-400 text-sm mt-1">Index updates as you code</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="text-center">
+      <p class="text-gray-400 mb-6">
+        Stop guessing. Start finding.
+      </p>
+      <a href="/grepai/getting-started/" class="btn-primary">
+        See how it works
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
